@@ -1,0 +1,9 @@
+module Bingo
+  type t_board = Array[Array[Integer]]
+
+  def bingo: (String data) -> Integer
+  def parse_boards: (Array[String] parts) -> Array[t_board]
+  def proof: (t_board board, Integer play) -> Integer
+  def simulate: (Array[Integer] plays, Array[t_board] boards) -> Integer
+  def win?: (Array[Integer] ary) -> bool
+end
