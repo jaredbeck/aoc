@@ -18,35 +18,43 @@ class Bingo
 
   def proof(board, play)
     play * board.reduce(0) { |a, row|
-      a + row.sum { |cell| cell > 0 ? cell : 0 }
+      a + row.sum { |cell| cell.nil? ? 0 : cell }
     }
+  end
+
+  def mark_boards(boards, play)
+    boards.each do |board|
+      board.each do |row|
+        row.each_with_index do |cell, ix|
+          next unless cell == play
+          row[ix] = nil
+        end
+      end
+    end
   end
 
   def simulate(plays, boards)
     plays.each do |play|
-      boards.each do |board|
-        board.each do |row|
-          row.each_with_index do |cell, ix|
-            next unless cell == play
-            row[ix] = -1 * cell.abs
-            col = board.flat_map { |r| r[ix] }
-            if win?(row) || win?(col)
-              return proof(board, play)
-            end
-          end
-        end
+      mark_boards(boards, play)
+      winner_indexes = winners(boards)
+      winner_indexes.each do |ix|
+        puts format('winner ix: %d proof: %d', ix, proof(boards[ix], play))
       end
+      boards.delete_if.with_index { |_, ix| winner_indexes.include?(ix) }
     end
-    raise 'no winner'
   end
 
-  def win?(ary)
-    raise format('Invalid array length: %s', ary) unless ary.length == 5
-    ary.all? { |e| e < 0 }
+  def winners(boards)
+    boards.map.with_index { |board, ix| winner?(board) ? ix : nil }.compact
+  end
+
+  def winner?(board)
+    nily = ->(row) { row.all?(&:nil?) }
+    board.any? { |row| nily[row] } || board.transpose.any? { |col| nily[col] }
   end
 end
 
-puts Bingo.new.bingo(DATA.read)
+Bingo.new.bingo(DATA.read)
 
 __END__
 28,82,77,88,95,55,62,21,99,14,30,9,97,92,94,3,60,22,18,86,78,71,61,43,79,33,65,81,26,49,47,51,0,89,57,75,42,35,80,1,46,83,39,53,40,36,54,70,76,38,50,23,67,2,20,87,37,66,84,24,98,4,7,12,44,10,29,5,48,59,32,41,90,17,56,85,96,93,27,74,45,25,15,6,69,16,19,8,31,13,64,63,34,73,58,91,11,68,72,52

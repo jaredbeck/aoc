@@ -1,9 +1,13 @@
 module Bingo
-  type t_board = Array[Array[Integer]]
+  type row = Array[Integer?]
+  type board = Array[row]
+  type hall = Array[board]
 
-  def bingo: (String data) -> Integer
-  def parse_boards: (Array[String] parts) -> Array[t_board]
-  def proof: (t_board board, Integer play) -> Integer
-  def simulate: (Array[Integer] plays, Array[t_board] boards) -> Integer
-  def win?: (Array[Integer] ary) -> bool
+  def bingo: (String data) -> void
+  def mark_boards: (hall boards, Integer play) -> void
+  def parse_boards: (Array[String] parts) -> hall
+  def proof: (board board, Integer play) -> Integer
+  def simulate: (Array[Integer] plays, hall boards) -> void
+  def winner?: (board board) -> bool
+  def winners: (hall boards) -> Array[Integer]
 end
