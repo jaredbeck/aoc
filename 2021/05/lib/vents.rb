@@ -7,13 +7,12 @@ require 'vent'
 
 class Vents
   def initialize
-    @max_x = 0
+    @max_x = 0 # actual max will be set in parse_point
     @max_y = 0
   end
 
   def run(input)
     vents = parse(input)
-    puts format('%d vents', vents.length)
     count_dangerous_intersections(vents)
   end
 
@@ -23,15 +22,10 @@ class Vents
     seabed = Array.new(@max_x + 1) { Array.new(@max_y + 1, 0) }
     vents.each do |v|
       v.each do |p|
-        begin
-          seabed[p.x][p.y] += 1
-        rescue NoMethodError => e
-          puts p.to_s
-          raise e
-        end
+        seabed[p.x][p.y] += 1
       end
     end
-    puts draw_seabed(seabed, 0, 0, 200, 100)
+    # puts draw_seabed(seabed, 200, 0, 400, 1000)
     seabed.sum { |column| column.sum { |cell| cell >= 2 ? 1 : 0 }}
   end
 
@@ -51,9 +45,8 @@ class Vents
       .split("\n")
       .map { |vent|
         point_strings = vent.split(" -> ")
-        start_point = parse_point(point_strings[0])
-        end_point = parse_point(point_strings[1])
-        Vent.new(start_point, end_point)
+        a, b = point_strings.map { |p| parse_point(p) }
+        Vent.new(a, b)
       }
   end
 

@@ -1,28 +1,24 @@
 # frozen_string_literal: true
 
 class Vent
-  def initialize(start_point, end_point)
-    @st = start_point
-    @en = end_point
+  def initialize(a, b)
+    @a = a
+    @b = b
   end
 
+  # Yields each `Point` on the line.
   def each
-    if @st.x == @en.x
-      wyes = [@st.y, @en.y]
-      (wyes.min .. wyes.max).each do |y|
-        yield Point.new(@st.x, y)
-      end
-    elsif @st.y == @en.y
-      exes = [@st.x, @en.x]
-      (exes.min .. exes.max).each do |x|
-        yield Point.new(x, @st.y)
-      end
-    else
-      # diagonal lines not supported yet
+    x = @a.x
+    y = @a.y
+    yield Point.new(x, y)
+    until x == @b.x && y == @b.y
+      x -= x <=> @b.x
+      y -= y <=> @b.y
+      yield Point.new(x, y)
     end
   end
 
   def to_s
-    format('%s -> %s', @st.to_s, @en.to_s)
+    format('%s -> %s', @a.to_s, @b.to_s)
   end
 end

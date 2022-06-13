@@ -1,5 +1,4 @@
 module Vents
-  def count_vents_at: (Point point, Array[Vent] vents) -> Integer
   def count_dangerous_intersections: (Array[Vent] vents) -> Integer
   def draw_seabed: (Array[Array[Integer]] seabed, Integer min_x, Integer min_y, Integer max_x, Integer max_y) -> String
   def parse: (String input) -> Array[Vent]
