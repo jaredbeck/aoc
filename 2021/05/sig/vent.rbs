@@ -1,0 +1,5 @@
+module Vent
+  def initialize: (Point start_point, Point end_point) -> Point
+  def each: { (Point) -> void } -> void
+  def to_s: -> String
+end

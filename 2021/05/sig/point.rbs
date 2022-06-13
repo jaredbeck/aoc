@@ -1,0 +1,6 @@
+module Point
+  def initialize: (Integer x, Integer y) -> Point
+  def to_s: -> String
+  def x: -> Integer
+  def y: -> Integer
+end
